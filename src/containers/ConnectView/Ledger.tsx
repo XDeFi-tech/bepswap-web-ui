@@ -46,7 +46,7 @@ const LedgerConnector = (props: Props) => {
 
     console.log('[+] LEDGER DEBUG: GETTING PUBLIC KEY');
     // get public key
-    const pk =  (await app.getPublicKey(hdPath)).pk;
+    const pk = (await app.getPublicKey(hdPath)).pk;
 
     // get address from pubkey
     const address = crypto.getAddressFromPublicKey(
@@ -61,7 +61,7 @@ const LedgerConnector = (props: Props) => {
     });
 
     try {
-          console.log('[+] LEDGER DEBUG: SHOWING ADDRESS');
+      console.log('[+] LEDGER DEBUG: SHOWING ADDRESS');
       // REQUESTS THE USER TO CONFIRM ADDRESS>
       const _ = await app.showAddress(asgardexBncClient.getPrefix(), hdPath); // results
 
@@ -80,7 +80,6 @@ const LedgerConnector = (props: Props) => {
         getContainer: getAppContainer,
         duration: 3,
       });
-
 
       // redirect to previous page
       history.goBack();

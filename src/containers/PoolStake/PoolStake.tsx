@@ -87,6 +87,10 @@ import useNetwork from '../../hooks/useNetwork';
 import usePrice from '../../hooks/usePrice';
 
 import { RUNE_SYMBOL } from '../../settings/assetData';
+// import {
+//   stakeRequestUsingXdefi,
+//   withdrawRequestUsingXdefi,
+// } from '../../helpers/utils/xdefiUtil';
 
 const { TabPane } = Tabs;
 
@@ -556,6 +560,16 @@ const PoolStake: React.FC<Props> = (props: Props) => {
             poolAddress: poolAddress || '',
             symbol,
           });
+        // } else if (user.type === 'xdefi') {
+        //   response = await stakeRequestUsingXdefi({
+        //     xdefiBinanceDexConnector: window.xfi.binance,
+        //     bncClient,
+        //     walletAddress: user.wallet,
+        //     runeAmount: runeAmountToSend,
+        //     assetAmount: targetAmount,
+        //     poolAddress: poolAddress || '',
+        //     symbol,
+        //   });
         } else {
           response = await stakeRequest({
             bncClient,
@@ -695,6 +709,15 @@ const PoolStake: React.FC<Props> = (props: Props) => {
             symbol,
             percent,
           });
+        // } else if (user.type === 'xdefi') {
+        //   response = await withdrawRequestUsingXdefi({
+        //     xdefiBinanceDexConnector: window.xfi.binance,
+        //     bncClient,
+        //     walletAddress: user.wallet,
+        //     poolAddress: poolAddress || '',
+        //     symbol,
+        //     percent,
+        //   });
         } else {
           response = await withdrawRequest({
             bncClient,

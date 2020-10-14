@@ -10,5 +10,7 @@ export declare global {
     // as soon as we know that Cypress does not need that anymore
     // Check `src/clients/binance.ts` for more information
     binance: BinanceClient
+
+    xfi: any
   }
 }

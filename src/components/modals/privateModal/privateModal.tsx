@@ -4,6 +4,7 @@ import { LockOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { delay } from '@thorchain/asgardex-util';
+import { crypto, Transaction } from '@binance-chain/javascript-sdk';
 
 import Input from '../../uielements/input';
 import Label from '../../uielements/label';
@@ -182,6 +183,19 @@ const PrivateModal: React.FC<Props> = (props): JSX.Element => {
         setInvalidPassword(true);
       } else if (result.address === address) {
         // confirm if decoded address is matched to the user's wallet address
+
+        await bncClient.setSigningDelegate(
+          async (tx: Transaction, signMsg?: any) => {
+            console.log('before sign', tx);
+            const signedTx = await tx.sign(
+              bncClient.getPrivateKey() || '',
+              signMsg,
+            );
+            console.log('signedTx', signedTx);
+            return signedTx;
+          },
+        );
+
         handleConfirm();
       }
       setValidating(false);
@@ -190,6 +204,52 @@ const PrivateModal: React.FC<Props> = (props): JSX.Element => {
 
     // if trustwallet is connected, check if session is valid
     if (walletType === 'walletconnect' && user?.walletConnector) {
+      handleConfirm();
+    }
+
+    // if xdefi is connected, check if session is valid
+    if (walletType === 'xdefi') {
+      await bncClient.setSigningDelegate(
+        async (tx: Transaction, signMsg?: any) => {
+          console.log('signing delegate xdefi', bncClient, tx, signMsg);
+          console.log(tx.getSignBytes);
+          return new Promise((resolve, reject) => {
+            window.xfi.binance.request(
+              {
+                method: 1,
+                params: [
+                  {
+                    from: user?.wallet,
+                    signBytes: tx.getSignBytes(signMsg),
+                  },
+                ],
+              },
+              (err: Error, resp: any) => {
+                console.log('xdefiBinanceDexConnector result', resp);
+                console.error(err);
+                if (err) {
+                  console.error(
+                    'XDEFI: error signing xdefiSignTransaction',
+                    err,
+                  );
+                  return reject(err);
+                }
+
+                console.log(resp);
+
+                const { pubKey, sig } = resp;
+                console.log(pubKey);
+                console.log(sig);
+                const pubKeyPoint = crypto.getPublicKey(pubKey);
+                tx.addSignature(pubKeyPoint, Buffer.from(sig, 'hex'));
+
+                console.log('signed tx', tx);
+                return resolve(tx);
+              },
+            );
+          });
+        },
+      );
       handleConfirm();
     }
 
@@ -212,6 +272,7 @@ const PrivateModal: React.FC<Props> = (props): JSX.Element => {
     if (walletType === 'keystore') return 'PASSWORD CONFIRMATION';
     if (walletType === 'ledger') return 'LEDGER CONFIRMATION';
     if (walletType === 'walletconnect') return 'TRANSACTION CONFIRMATION';
+    if (walletType === 'xdefi') return 'TRANSACTION CONFIRMATION';
 
     return 'CONNECT WALLET';
   }, [walletType]);
@@ -260,6 +321,14 @@ const PrivateModal: React.FC<Props> = (props): JSX.Element => {
       return (
         <ModalContent>
           <Label>CLICK CONFIRM TO SIGN WITH TRUSTWALLET!</Label>
+        </ModalContent>
+      );
+    }
+
+    if (walletType === 'xdefi') {
+      return (
+        <ModalContent>
+          <Label>CLICK CONFIRM TO SIGN WITH XDEFI!</Label>
         </ModalContent>
       );
     }

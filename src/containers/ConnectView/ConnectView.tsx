@@ -8,19 +8,21 @@ import { ContentWrapper } from './ConnectView.style';
 import Keystore from './Keystore';
 import WalletConnect from './WalletConnect';
 import Ledger from './Ledger';
+import Xdefi from './Xdefi';
 
 import * as walletActions from '../../redux/wallet/actions';
 import { isMainnet } from '../../env';
 
 const { TabPane } = Tabs;
 
-type TAB_TYPE = 'WALLET' | 'LEDGER' | 'KEYSTORE';
+type TAB_TYPE = 'WALLET' | 'LEDGER' | 'KEYSTORE' | 'XDEFI';
 const TAB_VALUES: {
   [key in TAB_TYPE]: TAB_TYPE;
 } = {
   WALLET: 'WALLET',
   LEDGER: 'LEDGER',
   KEYSTORE: 'KEYSTORE',
+  XDEFI: 'XDEFI',
 };
 
 type Props = {
@@ -29,7 +31,7 @@ type Props = {
 
 const ConnectView: React.FC<Props> = (props: Props): JSX.Element => {
   const { saveWallet } = props;
-  const [active, setActive] = useState<TAB_TYPE>(TAB_VALUES.KEYSTORE);
+  const [active, setActive] = useState<TAB_TYPE>(TAB_VALUES.XDEFI);
 
   const tabs = [
     {
@@ -48,6 +50,12 @@ const ConnectView: React.FC<Props> = (props: Props): JSX.Element => {
       label: 'keystore file',
       value: TAB_VALUES.KEYSTORE,
       comp: <Keystore saveWallet={saveWallet} />,
+      status: true,
+    },
+    {
+      label: 'xdefi',
+      value: TAB_VALUES.XDEFI,
+      comp: <Xdefi saveWallet={saveWallet} />,
       status: true,
     },
   ];

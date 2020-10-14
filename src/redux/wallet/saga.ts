@@ -47,6 +47,7 @@ export function* saveWalletSaga() {
   }: ReturnType<typeof actions.saveWallet>) {
     const { wallet } = payload;
 
+    console.log('debug: saveWallet', payload);
     saveWallet(payload);
 
     // update wallet balance and stake data
