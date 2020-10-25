@@ -52,6 +52,7 @@
     "@types/styled-components": "^4.4.2",
     "@types/webfontloader": "^1.6.29",
     "@walletconnect/qrcode-modal": "^1.0.0-beta.46",
+    "@xdefi/binancedex-provider": "^0.0.13-alpha",
     "antd": "^4.1.4",
     "axios": "^0.19.2",
     "axios-mock-adapter": "^1.17.0",

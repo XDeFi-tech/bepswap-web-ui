@@ -4,6 +4,7 @@ import { LockOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { delay } from '@thorchain/asgardex-util';
+import XDEFIBinanceDex from '@xdefi/binancedex-provider';
 
 import Input from '../../uielements/input';
 import Label from '../../uielements/label';
@@ -60,6 +61,13 @@ const PrivateModal: React.FC<Props> = (props): JSX.Element => {
       // if wallet type is ledger, ask users to verify ledger
       if (walletType === 'ledger') {
         verifyLedger();
+      }
+      if (walletType === 'xdefi') {
+        const xdefiProvider = new XDEFIBinanceDex(window.xfi.binance);
+
+        bncClient.setSigningDelegate(
+          xdefiProvider.defaultSigningDelegate(user?.wallet!!),
+        );
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -176,6 +184,11 @@ const PrivateModal: React.FC<Props> = (props): JSX.Element => {
       return;
     }
 
+    if (walletType === 'xdefi') {
+      handleConfirm();
+      return;
+    }
+
     // verify password if wallet type is keystore
     if (walletType === 'keystore' && user?.keystore) {
       setValidating(true);
@@ -218,6 +231,7 @@ const PrivateModal: React.FC<Props> = (props): JSX.Element => {
     if (walletType === 'keystore') return 'PASSWORD CONFIRMATION';
     if (walletType === 'ledger') return 'LEDGER CONFIRMATION';
     if (walletType === 'walletconnect') return 'TRANSACTION CONFIRMATION';
+    if (walletType === 'xdefi') return 'TRANSACTION CONFIRMATION';
 
     return 'CONNECT WALLET';
   }, [walletType]);
@@ -266,6 +280,14 @@ const PrivateModal: React.FC<Props> = (props): JSX.Element => {
       return (
         <ModalContent>
           <Label>CONFIRM TX USING YOUR TRUSTWALLET!</Label>
+        </ModalContent>
+      );
+    }
+
+    if (walletType === 'xdefi') {
+      return (
+        <ModalContent>
+          <Label>CLICK CONFIRM TO SIGN WITH XDEFI!</Label>
         </ModalContent>
       );
     }

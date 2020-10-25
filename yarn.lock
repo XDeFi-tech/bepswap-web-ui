@@ -3568,6 +3568,11 @@
     "@webassemblyjs/wast-parser" "1.9.0"
     "@xtuc/long" "4.2.2"
 
+"@xdefi/binancedex-provider@^0.0.13-alpha":
+  version "0.0.13-alpha"
+  resolved "https://registry.yarnpkg.com/@xdefi/binancedex-provider/-/binancedex-provider-0.0.13-alpha.tgz#6b019e252184ac03ca86be6628890f3e192472bc"
+  integrity sha512-f7eZjEss/WooSSVQlhUbTq5gGy4bSVp853Qi84684n5mbGRkaRFh56UC+hujY6rBj4OM9zrMMAIJgya6VYiqvQ==
+
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@xtuc/ieee754/-/ieee754-1.2.0.tgz#eef014a3145ae477a1cbc00cd1e552336dceb790"
