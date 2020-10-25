@@ -2,7 +2,7 @@ import { RemoteData } from '@devexperts/remote-data-ts';
 import { TokenAmount } from '@thorchain/asgardex-token';
 import { FixmeType, Maybe, Address } from '../../types/bepswap';
 
-export type WalletType = 'keystore' | 'walletconnect' | 'ledger';
+export type WalletType = 'keystore' | 'walletconnect' | 'ledger' | 'xdefi';
 
 export interface User {
   /**
